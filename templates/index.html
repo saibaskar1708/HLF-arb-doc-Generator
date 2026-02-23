@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HLF Reference Letter Generator</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .header .logo {
+      display: inline-block;
+      background: #1a3c6e;
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 1.6rem;
+      color: #1a3c6e;
+      font-weight: 700;
+    }
+    .header p {
+      color: #6b7280;
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      color: #374151;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .dropzone {
+      border: 2.5px dashed #c5cde6;
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f8faff;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .dropzone:hover, .dropzone.drag-over {
+      border-color: #1a3c6e;
+      background: #eef2ff;
+    }
+    .dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .dropzone .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .dropzone .label {
+      font-size: 1rem;
+      color: #374151;
+      font-weight: 500;
+    }
+    .dropzone .sub {
+      font-size: 0.82rem;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+    .dropzone.file-selected .label { color: #1a3c6e; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+    }
+    .form-group .hint {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: -2px;
+    }
+    .form-group input {
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+      color: #111827;
+    }
+    .form-group input:focus {
+      border-color: #1a3c6e;
+    }
+
+    .ref-preview {
+      background: #f0f4ff;
+      border: 1px solid #c5cde6;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      color: #1a3c6e;
+      margin-bottom: 24px;
+    }
+    .ref-preview strong { font-weight: 700; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: #1a3c6e;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-submit:hover { background: #14305a; }
+    .btn-submit:active { transform: scale(0.99); }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+    .alert-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+    .info-box {
+      margin-top: 28px;
+      background: #f8faff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      font-size: 0.82rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    .info-box strong { color: #374151; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">HLF</div>
+    <h1 id="pageTitle">Document Generator</h1>
+    <p>Hinduja Leyland Finance — Arbitration Case Documents</p>
+  </div>
+
+  <div class="card">
+    <h2>📂 Upload Excel & Configure</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="alert alert-{{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="/generate" enctype="multipart/form-data" id="genForm">
+
+      <!-- Document type selector -->
+      <div class="form-group" style="margin-bottom:20px;">
+        <label>Document Type</label>
+        <span class="hint">Select the document to generate</span>
+        <select name="doc_type" id="docType" style="border:1.5px solid #d1d5db;border-radius:8px;padding:9px 12px;font-size:0.9rem;outline:none;color:#111827;">
+          <option value="reference_letter">Reference Letter</option>
+          <option value="noh">Notice of Hearing (NOH)</option>
+        </select>
+      </div>
+
+      <!-- File drop zone -->
+      <div class="dropzone" id="dropzone">
+        <input type="file" name="excel_file" id="fileInput" accept=".xlsx,.xls" required />
+        <div class="icon">📊</div>
+        <div class="label" id="dropLabel">Drop Excel file here or click to browse</div>
+        <div class="sub">.xlsx or .xls  •  Sheet: DataFormatted (configurable)</div>
+      </div>
+
+      <!-- Sheet name (always visible) -->
+      <div class="form-row" style="grid-template-columns:1fr;">
+        <div class="form-group">
+          <label>Sheet Name</label>
+          <span class="hint">Exact sheet name in your Excel</span>
+          <input type="text" name="sheet_name" value="DataFormatted" id="sheetInput" />
+        </div>
+      </div>
+
+      <!-- NOH only fields -->
+      <div id="nohFields" style="display:none;">
+        <div class="form-group" style="margin-bottom:8px;">
+          <label>Arbitrator Signatures <span style="font-weight:400;color:#9ca3af;">(optional)</span></label>
+          <span class="hint">One entry per arbitrator — name must match the Excel exactly. White background removed automatically.</span>
+        </div>
+        <div id="sigSlots"></div>
+        <button type="button" id="addSigBtn"
+          style="margin-bottom:20px;background:none;border:1.5px dashed #c5cde6;border-radius:8px;
+                 padding:8px 16px;font-size:0.85rem;color:#1a3c6e;cursor:pointer;width:100%;">
+          + Add arbitrator signature
+        </button>
+      </div>
+
+      <!-- Reference Letter only fields -->
+      <div id="refLetterFields">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Lot Label</label>
+            <span class="hint">Used in output filename</span>
+            <input type="text" name="lot_label" value="Lot5" id="lotInput" />
+          </div>
+          <div class="form-group">
+            <label>Starting Reference Number</label>
+            <span class="hint">First REF counter value</span>
+            <input type="number" name="ref_start" value="129" min="1" id="refInput" />
+          </div>
+        </div>
+        <div class="ref-preview" style="margin-bottom:20px;">
+          First ref: <strong id="refPreview">HLF/SNS/REF/2026/129</strong>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">⚡ Generate Reference Letters</button>
+    </form>
+
+    <div class="info-box">
+      <strong>Required Excel columns:</strong>
+      Contract No, Contract Date, Borrower Name, Borrower Address, Vehicle Details,
+      Vehicle No, Engine No, Chassis No, LRN Ref No, LRN Date, Claim Date,
+      Claim Amount, Claim Amount in Words, Reference Letter Date,
+      HasCoBorrower (Y/N), HasGuarantor (Y/N)<br><br>
+      <strong>Optional:</strong> Co-Borrower Name, Co-Borrower Address,
+      Guarantor Name, Guaranator Address
+    </div>
+  </div>
+
+  <script>
+    const fileInput     = document.getElementById("fileInput");
+    const dropLabel     = document.getElementById("dropLabel");
+    const dropzone      = document.getElementById("dropzone");
+    const refInput      = document.getElementById("refInput");
+    const refPreview    = document.getElementById("refPreview");
+    const docType       = document.getElementById("docType");
+    const refLetterFlds = document.getElementById("refLetterFields");
+    const nohFlds       = document.getElementById("nohFields");
+    const submitBtn     = document.getElementById("submitBtn");
+    const pageTitle     = document.getElementById("pageTitle");
+
+    function applyDocType() {
+      const isNOH = docType.value === "noh";
+      refLetterFlds.style.display = isNOH ? "none" : "block";
+      nohFlds.style.display       = isNOH ? "block" : "none";
+      submitBtn.textContent = isNOH ? "⚡ Generate Notices of Hearing" : "⚡ Generate Reference Letters";
+      pageTitle.textContent = isNOH ? "Notice of Hearing Generator" : "Reference Letter Generator";
+    }
+
+    applyDocType();
+
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length) {
+        dropLabel.textContent = "✅ " + fileInput.files[0].name;
+        dropzone.classList.add("file-selected");
+        if (docType.value === "noh") scanArbitrators();
+      }
+    });
+
+    docType.addEventListener("change", () => {
+      applyDocType();
+      if (docType.value === "noh" && fileInput.files.length) scanArbitrators();
+    });
+
+    async function scanArbitrators() {
+      const fd = new FormData();
+      fd.append("excel_file", fileInput.files[0]);
+      fd.append("sheet_name", document.getElementById("sheetInput").value || "DataFormatted");
+      try {
+        const res  = await fetch("/api/scan-arbitrators", { method: "POST", body: fd });
+        const data = await res.json();
+        if (data.arbitrators && data.arbitrators.length > 0) {
+          document.getElementById("sigSlots").innerHTML = "";
+          sigCount = 0;
+          data.arbitrators.forEach(name => addSigSlot(name));
+        }
+      } catch (e) { console.error("scan-arbitrators failed:", e); }
+    }
+
+    // ── Dynamic arbitrator signature slots ──────────────────────────────────
+    let sigCount = 0;
+
+    function addSigSlot(nameValue) {
+      const idx  = sigCount++;
+      const wrap = document.createElement("div");
+      wrap.id = `sigSlot_${idx}`;
+      wrap.style.cssText = "display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-bottom:10px;";
+
+      wrap.innerHTML = `
+        <div class="form-group" style="gap:4px;">
+          <label style="font-size:0.78rem;">Arbitrator Name (as in Excel)</label>
+          <input type="text" name="sig_name_${idx}" placeholder="e.g. Mr. C. Karthik B.A B.L"
+            value="${nameValue || ''}"
+            style="border:1.5px solid #d1d5db;border-radius:8px;padding:8px 10px;font-size:0.82rem;outline:none;color:#111827;" />
+        </div>
+        <div class="form-group" style="gap:4px;">
+          <label style="font-size:0.78rem;">Signature Image (PNG / JPG)</label>
+          <input type="file" name="sig_image_${idx}" accept=".png,.jpg,.jpeg"
+            style="border:1.5px solid #d1d5db;border-radius:8px;padding:6px 10px;font-size:0.82rem;color:#111827;" />
+        </div>
+        <button type="button" onclick="document.getElementById('sigSlot_${idx}').remove();"
+          style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 12px;
+                 color:#dc2626;cursor:pointer;font-size:0.85rem;white-space:nowrap;margin-bottom:0;">
+          Remove
+        </button>`;
+
+      document.getElementById("sigSlots").appendChild(wrap);
+    }
+
+    // Start with 2 empty slots (common case)
+    addSigSlot(); addSigSlot();
+    document.getElementById("addSigBtn").addEventListener("click", () => addSigSlot());
+
+    ["dragover", "dragenter"].forEach(e => dropzone.addEventListener(e, ev => {
+      ev.preventDefault();
+      dropzone.classList.add("drag-over");
+    }));
+    ["dragleave", "drop"].forEach(e => dropzone.addEventListener(e, ev => {
+      dropzone.classList.remove("drag-over");
+    }));
+
+    refInput.addEventListener("input", () => {
+      refPreview.textContent = `HLF/SNS/REF/2026/${refInput.value || "?"}`;
+    });
+
+    document.getElementById("genForm").addEventListener("submit", () => {
+      submitBtn.textContent = "⏳ Processing…";
+      submitBtn.disabled = true;
+    });
+  </script>
+
+</body>
+</html>

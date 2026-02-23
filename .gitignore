@@ -1,0 +1,41 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ── Virtual environment ────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Case data (PII — never commit) ────────────────────────────────────────────
+*.xlsx
+*.xls
+
+# ── Generated output files ────────────────────────────────────────────────────
+uploads/
+outputs/
+NOH_Output/
+
+# ── Test / scratch DOCX files in root ─────────────────────────────────────────
+NOH_TEST*.docx
+NOH_SAMPLE*.docx
+NOH_COMBINED*.docx
+HLF NOH.docx
+
+# ── Debug / scratch XML dumps ─────────────────────────────────────────────────
+document_xml_raw.txt
+respondents_cell.xml
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# ── Flask session / instance ──────────────────────────────────────────────────
+instance/
+*.sqlite3

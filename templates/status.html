@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generating Letters — HLF</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header .logo {
+      display: inline-block;
+      background: #1a3c6e;
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .header h1 { font-size: 1.4rem; color: #1a3c6e; }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .status-icon { font-size: 3rem; text-align: center; margin-bottom: 12px; }
+    .status-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #1a3c6e;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .status-msg {
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.9rem;
+      min-height: 22px;
+      margin-bottom: 24px;
+    }
+
+    .progress-wrap {
+      background: #e5e7eb;
+      border-radius: 99px;
+      height: 14px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #1a3c6e, #3b82f6);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    .progress-pct {
+      text-align: right;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 28px;
+    }
+
+    /* Stats grid */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .stat-box {
+      background: #f8faff;
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-box .num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1a3c6e;
+    }
+    .stat-box .lbl {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+    .stat-box.warn .num { color: #d97706; }
+    .stat-box.err  .num { color: #dc2626; }
+
+    /* Download buttons */
+    .dl-section { display: none; }
+    .dl-section.visible { display: block; }
+    .dl-section h3 {
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .btn-dl {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      transition: opacity 0.2s;
+    }
+    .btn-dl:hover { opacity: 0.85; }
+    .btn-zip      { background: #1a3c6e; color: #fff; }
+    .btn-combined { background: #0f766e; color: #fff; }
+    .btn-dl .icon { font-size: 1.4rem; }
+    .btn-dl .info { display: flex; flex-direction: column; }
+    .btn-dl .info .name { font-size: 0.95rem; }
+    .btn-dl .info .sub  { font-size: 0.75rem; opacity: 0.75; font-weight: 400; }
+
+    /* Errors */
+    .errors-section { margin-top: 20px; }
+    .errors-section summary {
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: #dc2626;
+      font-weight: 600;
+      padding: 8px 0;
+    }
+    .error-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin-top: 8px;
+    }
+    .error-table th {
+      background: #fef2f2;
+      padding: 6px 10px;
+      text-align: left;
+      color: #7f1d1d;
+    }
+    .error-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #fee2e2;
+      color: #374151;
+      word-break: break-word;
+    }
+
+    .btn-back {
+      display: inline-block;
+      margin-top: 20px;
+      color: #1a3c6e;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .btn-back:hover { text-decoration: underline; }
+
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 3px solid #c5cde6;
+      border-top-color: #1a3c6e;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">HLF</div>
+    <h1>Reference Letter Generator</h1>
+  </div>
+
+  <div class="card">
+    <div class="status-icon" id="statusIcon">⏳</div>
+    <div class="status-title" id="statusTitle">
+      <span class="spinner"></span> Generating letters…
+    </div>
+    <div class="status-msg" id="statusMsg">Starting up…</div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-pct" id="progressPct">0%</div>
+
+    <div class="stats" id="statsGrid" style="display:none;">
+      <div class="stat-box">
+        <div class="num" id="statSuccess">—</div>
+        <div class="lbl">Generated</div>
+      </div>
+      <div class="stat-box warn">
+        <div class="num" id="statSkipped">—</div>
+        <div class="lbl">Skipped</div>
+      </div>
+      <div class="stat-box err">
+        <div class="num" id="statErrors">—</div>
+        <div class="lbl">Errors</div>
+      </div>
+    </div>
+
+    <div class="dl-section" id="dlSection">
+      <h3>📥 Download your files</h3>
+      <a class="btn-dl btn-zip" href="/download/{{ job_id }}/zip">
+        <span class="icon">🗜️</span>
+        <span class="info">
+          <span class="name" id="zipLabel">Download ZIP — All Individual Documents</span>
+          <span class="sub">One .docx per case</span>
+        </span>
+      </a>
+      <a class="btn-dl btn-combined" href="/download/{{ job_id }}/combined" id="combinedBtn">
+        <span class="icon">📄</span>
+        <span class="info">
+          <span class="name">Download Combined .docx</span>
+          <span class="sub">All letters merged into one document</span>
+        </span>
+      </a>
+    </div>
+
+    <details class="errors-section" id="skippedSection" style="display:none;">
+      <summary id="skippedSummary">⏭ Show skipped rows</summary>
+      <table class="error-table">
+        <thead>
+          <tr><th>Contract No</th><th>Borrower</th><th>Reason</th></tr>
+        </thead>
+        <tbody id="skippedBody"></tbody>
+      </table>
+    </details>
+
+    <details class="errors-section" id="errorsSection" style="display:none;">
+      <summary id="errorsSummary">⚠ Show errors</summary>
+      <table class="error-table">
+        <thead>
+          <tr><th>Row</th><th>Contract No</th><th>Error</th></tr>
+        </thead>
+        <tbody id="errorsBody"></tbody>
+      </table>
+    </details>
+
+    <a href="/" class="btn-back">← Generate another batch</a>
+  </div>
+
+  <script>
+    const JOB_ID = "{{ job_id }}";
+    let pollInterval;
+
+    function update(data) {
+      document.getElementById("progressBar").style.width  = (data.progress || 0) + "%";
+      document.getElementById("progressPct").textContent  = (data.progress || 0) + "%";
+      document.getElementById("statusMsg").textContent    = data.message || "";
+
+      if (data.status === "done") {
+        clearInterval(pollInterval);
+        const isNOH = data.doc_type === "noh";
+
+        document.getElementById("statusIcon").textContent  = "✅";
+        document.getElementById("statusTitle").innerHTML   = isNOH ? "NOH documents generated!" : "All letters generated!";
+        document.getElementById("statsGrid").style.display = "grid";
+        document.getElementById("statSuccess").textContent = data.success;
+        document.getElementById("statSkipped").textContent = data.skipped;
+        document.getElementById("statErrors").textContent  = (data.errors || []).length;
+        document.getElementById("dlSection").classList.add("visible");
+
+        // Update labels for NOH
+        if (isNOH) {
+          document.getElementById("zipLabel").textContent = "Download ZIP — All NOH Documents";
+          const cBtn = document.getElementById("combinedBtn");
+          cBtn.querySelector(".name").textContent = "Download Combined NOH .docx";
+          cBtn.querySelector(".sub").textContent  = "All NOH documents merged into one file";
+        }
+
+        // Skipped rows (NOH)
+        if (data.skipped_details && data.skipped_details.length > 0) {
+          document.getElementById("skippedSection").style.display = "block";
+          document.getElementById("skippedSummary").textContent =
+            `⏭ ${data.skipped_details.length} skipped row(s) — click to expand`;
+          const tbody = document.getElementById("skippedBody");
+          data.skipped_details.forEach(s => {
+            tbody.innerHTML += `<tr><td>${s.contract_no}</td><td>${s.borrower_name}</td><td>${s.reason}</td></tr>`;
+          });
+        }
+
+        if (data.errors && data.errors.length > 0) {
+          document.getElementById("errorsSection").style.display = "block";
+          document.getElementById("errorsSummary").textContent =
+            `⚠ ${data.errors.length} error(s) — click to expand`;
+          const tbody = document.getElementById("errorsBody");
+          data.errors.forEach(([row, contract, msg]) => {
+            tbody.innerHTML += `<tr><td>${row}</td><td>${contract}</td><td>${msg}</td></tr>`;
+          });
+        }
+
+      } else if (data.status === "error") {
+        clearInterval(pollInterval);
+        document.getElementById("statusIcon").textContent = "❌";
+        document.getElementById("statusTitle").innerHTML  = "Generation failed";
+      }
+    }
+
+    async function poll() {
+      try {
+        const res  = await fetch(`/api/status/${JOB_ID}`);
+        const data = await res.json();
+        update(data);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    poll();
+    pollInterval = setInterval(poll, 1000);
+  </script>
+
+</body>
+</html>
