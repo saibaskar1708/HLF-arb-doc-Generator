@@ -2,7 +2,7 @@
 generate_noh.py
 ───────────────
 Generates Notice of Hearing (NOH) Word documents (.docx) for each case
-in the DataFormatted sheet of 'Lot 4 HLF Cases.xlsx'.
+in the DataFormatted sheet of 'Lot 5 HLF Cases.xlsx'.
 
 Each document is 2 pages:
   Page 1 – Notice of Hearing  (fits one A4 page)
@@ -31,10 +31,11 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
-BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
-EXCEL_PATH = os.path.join(BASE_DIR, "Lot 4 HLF Cases.xlsx")
-SHEET_NAME = "DataFormatted"
-OUTPUT_DIR = os.path.join(BASE_DIR, "NOH_Output")
+BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
+EXCEL_PATH  = os.path.join(BASE_DIR, "Lot 5 HLF Cases.xlsx")
+SHEET_NAME  = "DataFormatted"
+OUTPUT_DIR  = os.path.join(BASE_DIR, "NOH_Output")
+SIG_DIR     = os.path.join(BASE_DIR, "Signatures")
 
 # ── Column indices (0-based) ───────────────────────────────────────────────────
 C_CONTRACT_NO        = 0
@@ -59,6 +60,8 @@ C_MEETING_TIMINGS    = 49
 C_ARB_EMAIL          = 50
 C_REFER_BORROWER     = 53
 C_ARB_EXPERIENCE     = 71
+C_CURRENT_CASE_COUNT = 72
+C_ARB_SIGNATURE      = 73
 
 # ── Page layout constants ──────────────────────────────────────────────────────
 PAGE_W        = Cm(21)
@@ -632,10 +635,41 @@ def merge_noh_docs(doc_bufs):
 
 # ── Batch processing ───────────────────────────────────────────────────────────
 
+def _build_sig_map(wb):
+    """
+    Build a dict mapping arbitrator name (lowercased) -> signature file path.
+    Reads the Settings sheet: col 0 = arb code, col 1 = arb name.
+    Looks for matching image in SIG_DIR: tries <CODE>.png, <code>.png (case-insensitive).
+    """
+    sig_map = {}
+    try:
+        ws = wb['Settings']
+        for row in ws.iter_rows(values_only=True):
+            code = row[0]
+            name = row[1]
+            if not code or not name or str(code).strip().lower() == 'arbitrator code':
+                continue
+            code = str(code).strip()
+            name_key = str(name).strip().lower()
+            # Try matching file in SIG_DIR (case-insensitive)
+            for fname in os.listdir(SIG_DIR):
+                base = os.path.splitext(fname)[0]
+                if base.lower() == code.lower():
+                    sig_map[name_key] = os.path.join(SIG_DIR, fname)
+                    break
+    except Exception:
+        pass
+    return sig_map
+
+
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     wb = openpyxl.load_workbook(EXCEL_PATH, read_only=True, data_only=True)
+
+    # Build arb-name -> signature-file map from Settings sheet
+    sig_map = _build_sig_map(wb)
+
     ws = wb[SHEET_NAME]
 
     all_rows = list(ws.iter_rows(values_only=True))
@@ -672,7 +706,9 @@ def main():
             continue
 
         try:
-            doc = build_noh(row_data)
+            arb_name_key = v(row_data[C_ARB_NAME]).lower()
+            sig_path = sig_map.get(arb_name_key)
+            doc = build_noh(row_data, sig_image_path=sig_path)
             safe = contract_no.replace('/', '_').replace('\\', '_')
             filename = f"NOH_{safe}.docx"
             filepath = os.path.join(OUTPUT_DIR, filename)

@@ -2,7 +2,7 @@
 generate_proceedings.py
 ───────────────────────
 Generates Hearing Proceedings (.docx + .pdf) for each case in the
-DataFormatted sheet of 'Lot 3 HLF Cases.xlsx'.
+DataFormatted sheet of 'Lot 1 HLF Cases.xlsx'.
 
 Each proceedings page contains:
   - Arbitrator header (BEFORE [ARB NAME], SOLE ARBITRATOR)
@@ -20,7 +20,7 @@ Outputs
 
 Signature images
   Place PNG/JPG files in a  signatures/  sub-folder, named by arbitrator
-  code (e.g.  signatures/CJS.png,  signatures/GB.jpg).
+  code (e.g.  signatures/CJS.png,  signatures/slm.png).
   Arbitrator codes are read from the Settings sheet.
   The "Arbitrator Signature" column (col 72) in the worksheet is also
   checked; if it contains a valid file path that file is used instead.
@@ -53,7 +53,7 @@ from docx.oxml import OxmlElement
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 BASE_DIR       = os.path.dirname(os.path.abspath(__file__))
-EXCEL_PATH     = os.path.join(BASE_DIR, "Lot 3 HLF Cases.xlsx")
+EXCEL_PATH     = os.path.join(BASE_DIR, "Lot 1 HLF Cases.xlsx")
 SHEET_NAME     = "DataFormatted"
 OUTPUT_DIR     = os.path.join(BASE_DIR, "Proceedings_Output")
 SIGNATURES_DIR = os.path.join(BASE_DIR, "signatures")

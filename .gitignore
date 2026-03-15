@@ -39,3 +39,18 @@ desktop.ini
 # ── Flask session / instance ──────────────────────────────────────────────────
 instance/
 *.sqlite3
+
+# ── Secrets — never commit ────────────────────────────────────────────────────
+.env
+*.env
+
+# ── Generated IndiaPost outputs ───────────────────────────────────────────────
+History_PDFs/
+Receipts_JSON/
+IndiaPost_Report_*.xlsx
+
+# ── Generated proceedings / combined outputs ──────────────────────────────────
+Proceedings_Output/
+HLF_Proceedings_Combined.docx
+HLF_Proceedings_Combined.pdf
+Signatures/
