@@ -1,0 +1,23 @@
+{
+  "skill_name": "hlf-monthly-billing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's the billing data for March 2026. Please generate the HLF invoice packages. Bill date is 14.03.2026, month is MAR, year 2026.",
+      "expected_output": "17 per-state PDF invoice packages, each containing a covering letter, GST bill, and landscape case detail sheet merged into one PDF. Vidarbha should be auto-generated since no GST bill exists for it.",
+      "files": ["billing-data.xlsx"]
+    },
+    {
+      "id": 2,
+      "prompt": "I need to regenerate only the Rajasthan and Jharkhand invoice packages for March 2026. The GST bills are in the GST Bills folder.",
+      "expected_output": "Only 2 PDF packages generated (Rajasthan and Jharkhand), using --states-only flag.",
+      "files": ["billing-data.xlsx"]
+    },
+    {
+      "id": 3,
+      "prompt": "Run the April 2026 HLF billing. Here's the new excel. Bill date is 07.04.2026. The GST bills for April are in the GST Bills folder.",
+      "expected_output": "Invoice packages for all states present in the April billing data, with April 2026 dates and APR in invoice numbers.",
+      "files": ["billing-data.xlsx"]
+    }
+  ]
+}

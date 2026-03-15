@@ -1,0 +1,249 @@
+{
+  "_comment": "HLF State Master Data — edit this file to update addresses, GST numbers or add new states",
+  "_last_updated": "2026-03-14",
+
+  "our_company": {
+    "name": "SAI & SAI SMART SOLUTIONS",
+    "address": "NO 2/1, DEWAN BAHADUR SHANMUGAM STREET, Kilpauk, Chennai, Tamil Nadu - 600010",
+    "gstin": "33BANPS9317Q1ZR",
+    "state": "Tamil Nadu",
+    "state_code": "33",
+    "phone": "9884647697",
+    "email": "saibaskar@snsarbitrationcentre.org",
+    "signatory": "Saibaskar Parthasarathy",
+    "bank_name": "IndusInd Bank",
+    "bank_ac": "201001651431",
+    "bank_branch": "ANNANAGAR",
+    "bank_ifsc": "INDB0000046"
+  },
+
+  "hlf_contact": "Ms. Sumana B \u2013 Corporate Legal",
+  "hlf_pan": "AACCH1807P",
+  "court_name": "Sai & Sai Arbitration Centre",
+
+  "states": {
+    "Andhra Pradesh": {
+      "inv_prefix": "ARB/HLF37",
+      "state_suffix": "AP",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "3rd & 4th Floor, 54-20-10/A, Plot no. 43, Gurunanak Colony Road,",
+        "Opp SBI Bank, Kanaka Durga Gazetted Officers Colony,",
+        "Gurunanak Nagar, Vijayawada, Andhra Pradesh - 520008"
+      ],
+      "gstin": "37AACCH1807P1ZC",
+      "state_code": "37",
+      "gst_type": "IGST",
+      "gst_file_pattern": "ANDHRA"
+    },
+    "Assam": {
+      "inv_prefix": "ARB/HLF18",
+      "state_suffix": "AS",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "1st Floor, H.No.20, Udyan Path Road, North Guwahati,",
+        "Kamrup, Assam - 781031"
+      ],
+      "gstin": "18AACCH1807P1ZC",
+      "state_code": "18",
+      "gst_type": "IGST",
+      "gst_file_pattern": "ASSAM"
+    },
+    "Bihar": {
+      "inv_prefix": "ARB/HLF10",
+      "state_suffix": "BR",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "3rd Floor, Saguna More, DD Complex, Above Fashion Bazar,",
+        "Danapur, Patna, Bihar - 801503"
+      ],
+      "gstin": "10AACCH1807P1ZS",
+      "state_code": "10",
+      "gst_type": "IGST",
+      "gst_file_pattern": "BIHAR"
+    },
+    "Haryana": {
+      "inv_prefix": "ARB/HLF06",
+      "state_suffix": "HR",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "No. 445, AIHP Horizon Complex, Udyog Vihar Phase-5,",
+        "Gurugram, Haryana - 122016"
+      ],
+      "gstin": "06AACCH1807P1ZH",
+      "state_code": "06",
+      "gst_type": "IGST",
+      "gst_file_pattern": "HARYANA"
+    },
+    "Jharkhand": {
+      "inv_prefix": "ARB/HLF20",
+      "state_suffix": "JH",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "Ganpati Complex Block-B, Straight Mile Road,",
+        "Sakchi Jamshedpur, East Singhbhum, Jharkhand - 831001"
+      ],
+      "gstin": "20AACCH1807P1ZR",
+      "state_code": "20",
+      "gst_type": "IGST",
+      "gst_file_pattern": "JHARKHAND"
+    },
+    "Karnataka": {
+      "inv_prefix": "ARB/HLF29",
+      "state_suffix": "KA",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "4th Floor, No.50, Vinay Arcade, Shanthi Road,",
+        "Bengaluru, Karnataka - 560027"
+      ],
+      "gstin": "29AACCH1807P1Z9",
+      "state_code": "29",
+      "gst_type": "IGST",
+      "gst_file_pattern": "KARNATAKA"
+    },
+    "Kerala": {
+      "inv_prefix": "ARB/HLF32",
+      "state_suffix": "KL",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "Door No.39/2803, Karims Building, Warriam Road,",
+        "Kochi, Ernakulam, Kerala - 682016"
+      ],
+      "gstin": "32AACCH1807P1ZM",
+      "state_code": "32",
+      "gst_type": "IGST",
+      "gst_file_pattern": "KERLA"
+    },
+    "Maharashtra": {
+      "inv_prefix": "ARB/HLF27",
+      "state_suffix": "MH",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "3rd Floor, Unit No. 318, Orion Business Park, Ghodbunder Road,",
+        "Kapurbawadi, Thane West, Maharashtra - 400607"
+      ],
+      "gstin": "27AACCH1807P1ZD",
+      "state_code": "27",
+      "gst_type": "IGST",
+      "gst_file_pattern": "MAHARASHTRA"
+    },
+    "Orissa": {
+      "inv_prefix": "ARB/HLF21",
+      "state_suffix": "OD",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "Khewat No.1, Creative Plaza Commercial Complex,",
+        "Bhubaneswar, Khordha, Odisha - 751010"
+      ],
+      "gstin": "21AACCH1807P1ZP",
+      "state_code": "21",
+      "gst_type": "IGST",
+      "gst_file_pattern": "ODISHA"
+    },
+    "Punjab": {
+      "inv_prefix": "ARB/HLF03",
+      "state_suffix": "PB",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "B15-79, Abadi Nirankari Mohalla, A1/G Troad,",
+        "Near Vishvakarma Chowk, Vil Saidan, Ludhiana, Punjab - 141003"
+      ],
+      "gstin": "03AACCH1807P1ZN",
+      "state_code": "03",
+      "gst_type": "IGST",
+      "gst_file_pattern": "PUNJAB"
+    },
+    "Rajasthan": {
+      "inv_prefix": "ARB/HLF08",
+      "state_suffix": "RJ",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "II Floor, 301 and 308, Shalimar Complex, Church Road,",
+        "Jaipur, Rajasthan - 302001"
+      ],
+      "gstin": "08AACCH1807P1ZD",
+      "state_code": "08",
+      "gst_type": "IGST",
+      "gst_file_pattern": "RAJASTHAN"
+    },
+    "Tamil Nadu": {
+      "inv_prefix": "ARB/HLF33",
+      "state_suffix": "TN",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "Ground Floor, 27A, South Phase, Developed Industrial Estate,",
+        "Guindy, Chennai, Tamil Nadu - 600032"
+      ],
+      "gstin": "33AACCH1807P1ZK",
+      "state_code": "33",
+      "gst_type": "CGST+SGST",
+      "gst_file_pattern": "TAMILNADU"
+    },
+    "Telangana": {
+      "inv_prefix": "ARB/HLF36",
+      "state_suffix": "TG",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "2nd Floor, Indira Nagar, Ginwala Compound, T19 Towers,",
+        "M.G. Road, Secunderabad, Hyderabad, Telangana - 500003"
+      ],
+      "gstin": "36AACCH1807P1ZE",
+      "state_code": "36",
+      "gst_type": "IGST",
+      "gst_file_pattern": "TELANGANA"
+    },
+    "Uttar Pradesh": {
+      "inv_prefix": "ARB/HLF09",
+      "state_suffix": "UP",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "9th Floor, Unit No. 910, Plot No. TC/G-2/2 & TC/G-5/5, Cyber Heights,",
+        "Vibhuti Khand, Gomti Nagar, Lucknow, Uttar Pradesh - 226010"
+      ],
+      "gstin": "09AACCH1807P1ZB",
+      "state_code": "09",
+      "gst_type": "IGST",
+      "gst_file_pattern": "UTTARPRADESH"
+    },
+    "Uttarakhand": {
+      "inv_prefix": "ARB/HLF05",
+      "state_suffix": "UT",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "2nd Floor, 134, A.K. Tower, Subhash Road,",
+        "Dehradun, Uttarakhand - 248001"
+      ],
+      "gstin": "05AACCH1807P1ZJ",
+      "state_code": "05",
+      "gst_type": "IGST",
+      "gst_file_pattern": "UTTARAKAND"
+    },
+    "Vidarbha": {
+      "inv_prefix": "ARB/HLF27",
+      "state_suffix": "VB",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "Plot No.317, Office Block No.101, 1st Floor, Buty Building,",
+        "Ravindranath Tagore Road, Beside M.G. House, Civil Lines,",
+        "Nagpur, Maharashtra - 440001"
+      ],
+      "gstin": "27AACCH1807P1ZD",
+      "state_code": "27",
+      "gst_type": "IGST",
+      "gst_file_pattern": "VIDARBHA"
+    },
+    "West Bengal": {
+      "inv_prefix": "ARB/HLF19",
+      "state_suffix": "WB",
+      "hlf_address": [
+        "M/S. HINDUJA LEYLAND FINANCE LIMITED (PAN: AACCH1807P)",
+        "Ground Floor, No. 7/1, Lords Building, Lord Sinha Road,",
+        "Kolkata, West Bengal - 700071"
+      ],
+      "gstin": "19AACCH1807P1ZA",
+      "state_code": "19",
+      "gst_type": "IGST",
+      "gst_file_pattern": "WESTBENGAL"
+    }
+  }
+}
